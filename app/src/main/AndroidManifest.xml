@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.administrator.testdmc">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name="com.han.dlnaplayercontroller.act.MainActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTop">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.han.dlnaplayercontroller.act.ImageControllerActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTop"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name="com.han.dlnaplayercontroller.act.MusicControllerActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTop"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name="com.han.dlnaplayercontroller.act.VideoControllerActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTop"
+            android:screenOrientation="sensorPortrait" />
+
+        <service
+            android:name="com.han.dlnaplayercontroller.server.DMSService"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.geniusgithub.start.dmsengine" />
+                <action android:name="com.geniusgithub.restart.dmsengine" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.han.dlnaplayercontroller.server.DlnaService"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.geniusgithub.allshare.search_device" />
+                <action android:name="com.geniusgithub.allshare.reset_search_device" />
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>

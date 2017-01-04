@@ -1,6 +1,7 @@
 package com.han.dlnaplayercontroller.act;
 
 import android.os.Bundle;
+import android.os.HandlerThread;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -16,9 +17,11 @@ public class BaseActivity extends AppCompatActivity {
     protected PlayActionManager playActionManager;
     protected RxBus rxBus;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         playActionManager = PlayActionManager.getSingleTon();
         rxBus = RxBus.getInstance();
     }

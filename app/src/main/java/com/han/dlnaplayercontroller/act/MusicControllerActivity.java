@@ -19,6 +19,9 @@ public class MusicControllerActivity extends BaseMediaControllerActivity {
             playActionManager.stop();
             String metaData = DlnaUtils.creatMetaData(item.getTitle(), UpnpUtil.DLNA_OBJECTCLASS_MUSICID);
             playActionManager.play(item.getRes(), metaData);
+            playActionManager.getDuration();
+            progressTimer.stopTimer();
+            progressTimer.startTimer();
             control_title.setText(item.getTitle());
         }
     }

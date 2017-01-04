@@ -198,6 +198,7 @@ public class MultiPointController implements IController {
 
         localAction.setArgumentValue("InstanceID", "0");
         if (localAction.postControlAction()) {
+            Log.e("tlh","MultiPointController--MediaDuration:"+localAction.getArgumentValue("MediaDuration"));
             return localAction.getArgumentValue("MediaDuration");
         } else {
             return null;

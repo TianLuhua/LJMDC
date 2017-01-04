@@ -166,6 +166,9 @@ public class DMSService extends Service implements IBaseEngine,
 	private void awakeWorkThread() {
 		String friendName = DlnaUtils.getDevName(this);
 		String uuid = DlnaUtils.creat12BitUUID(this, "-dms");
+
+
+
 		mWorkThread.setParam(mMediaStoreCenter.getRootDir(), friendName, uuid);
 
 		if (mWorkThread.isAlive()) {

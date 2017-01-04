@@ -9,6 +9,7 @@ import com.han.dlnaplayercontroller.utils.UpnpUtil;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 
 public class VideoControllerActivity extends BaseMediaControllerActivity {
 
@@ -29,6 +30,10 @@ public class VideoControllerActivity extends BaseMediaControllerActivity {
         if (item != null && item.getRes() != null) {
             String metaData = DlnaUtils.creatMetaData(item.getTitle(), UpnpUtil.DLNA_OBJECTCLASS_VIDEOID);
             playActionManager.play(item.getRes(), metaData);
+            playActionManager.getDuration();
+            progressTimer.stopTimer();
+            progressTimer.startTimer();
+            Log.e("tlh","VideoControllerActivity---play");
             control_title.setText(item.getTitle());
         }
     }

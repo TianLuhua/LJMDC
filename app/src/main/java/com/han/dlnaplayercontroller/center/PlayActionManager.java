@@ -378,10 +378,12 @@ public class PlayActionManager implements IController {
         controHandler.sendMessage(msg);
     }
 
+    //获取当前的播放事件
     public void getPosition() {
         controHandler.sendEmptyMessage(GETPOSITION);
     }
 
+    //获取当前播放资源的总事件
     public void getDuration() {
         controHandler.sendEmptyMessage(GETDURATION);
     }

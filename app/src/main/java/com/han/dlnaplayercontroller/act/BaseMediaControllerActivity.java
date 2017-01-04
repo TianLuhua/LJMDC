@@ -1,6 +1,9 @@
 package com.han.dlnaplayercontroller.act;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import com.example.administrator.testdmc.R;
 import com.han.dlnaplayercontroller.center.MediaItemFactory;
@@ -13,6 +16,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
@@ -43,18 +48,23 @@ public abstract class BaseMediaControllerActivity extends BaseActivity implement
     protected static final int SHOW_PROGRESS = 0x001;
     private static final String MUTE = "1";
     private static final String UNMUTE = "0";
+    protected ProgressTimer progressTimer;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.music_controller);
+
         playActionManager = PlayActionManager.getSingleTon();
         //设置回调接口，更新
         playActionManager.setUpdateUiCallBack(this);
         //初始化ExBus start
         initRxBus();
         //初始化ExBus end
+        progressTimer = new ProgressTimer(BaseMediaControllerActivity.this);
+        progressTimer.setHandler(mHandler, SHOW_PROGRESS);
+
         duration = (TextView) findViewById(R.id.media_control_duration);
         currTime = (TextView) findViewById(R.id.media_control_currtime);
         fl_volume = (FrameLayout) findViewById(R.id.fl_volume);
@@ -108,7 +118,7 @@ public abstract class BaseMediaControllerActivity extends BaseActivity implement
     }
 
     private void initRxBus() {
-       rxBus.receive(new Func1<Object, Boolean>() {
+        rxBus.receive(new Func1<Object, Boolean>() {
             @Override
             public Boolean call(Object o) {
                 Log.e("tlh", "BaseMediaControllerActivity---Receive---Filter");
@@ -142,10 +152,12 @@ public abstract class BaseMediaControllerActivity extends BaseActivity implement
 
     }
 
+
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case SHOW_PROGRESS:
+                    playActionManager.getPosition();
                     break;
             }
         }
@@ -271,11 +283,13 @@ public abstract class BaseMediaControllerActivity extends BaseActivity implement
 
     @Override
     public void onPosition(String position) {
+        Log.e("tlh", "onPosition:" + position);
         currTime.setText(position);
     }
 
     @Override
     public void onDuration(String duration) {
+        Log.e("tlh", "duration:" + duration);
         this.duration.setText(duration);
     }
 

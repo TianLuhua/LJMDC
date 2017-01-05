@@ -30,5 +30,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         rxBus.unsubscribe();
+        playActionManager.stop();
+        playActionManager = null;
     }
 }

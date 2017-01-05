@@ -271,13 +271,13 @@ public class MainActivity extends Activity implements IDeviceChangeListener {
     private void updateDMSDeviceList() {
         deviceFileView.setAdapter(adapter);
         curradaAdapter = adapter;
-        //获取局域网中DMS设备
+        //获取DMS设备
         List<Device> devices = playreProxy.getDMSDeviceList();
         adapter.refreshData(devices);
     }
 
     private void updateDMRDeviceList() {
-        //获取局域网中DMR设备
+        //获取DMR设备
         List<Device> devices = playreProxy.getDMRDeviceList();
         dmrSelectedWindow.refreshData(devices);
     }

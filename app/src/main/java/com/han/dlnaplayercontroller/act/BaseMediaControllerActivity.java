@@ -11,6 +11,7 @@ import com.han.dlnaplayercontroller.center.PlayActionManager;
 import com.han.dlnaplayercontroller.center.PlayActionManager.UpdateUiCallBack;
 import com.han.dlnaplayercontroller.model.MediaItem;
 import com.han.dlnaplayercontroller.rxbus.RxBus;
+import com.han.dlnaplayercontroller.utils.TimeFormatUtil;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -49,6 +50,7 @@ public abstract class BaseMediaControllerActivity extends BaseActivity implement
     private static final String MUTE = "1";
     private static final String UNMUTE = "0";
     protected ProgressTimer progressTimer;
+    private int mMediaDuration;
 
 
     @Override
@@ -77,17 +79,22 @@ public abstract class BaseMediaControllerActivity extends BaseActivity implement
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                currTime.setText(TimeFormatUtil.secToTime(seekBar.getProgress()));
                 Log.e("tlh", "onProgressChanged:" + i);
+
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
                 Log.e("tlh", "onStartTrackingTouch:");
+
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Log.e("tlh", "onStopTrackingTouch:");
+                int progress = seekBar.getProgress();
+                playActionManager.seekTo(TimeFormatUtil.secToTime(progress));
+                Log.e("tlh", "onStopTrackingTouch:" + TimeFormatUtil.secToTime(progress));
             }
         });
         sb_voice = (SeekBar) findViewById(R.id.sb_voice);
@@ -277,20 +284,25 @@ public abstract class BaseMediaControllerActivity extends BaseActivity implement
     @Override
     public void onSeekTo(boolean isSeek, String progress) {
         if (isSeek) {
-            seekBar.setProgress(Integer.parseInt(progress));
+            seekBar.setProgress(TimeFormatUtil.getIntLength(progress));
         }
     }
 
     @Override
     public void onPosition(String position) {
-        Log.e("tlh", "onPosition:" + position);
+
         currTime.setText(position);
+        seekBar.setProgress(TimeFormatUtil.getIntLength(position));
+        Log.e("tlh", "onPosition:" + position+",TimeFormatUtil.getIntLength(position):"+TimeFormatUtil.getIntLength(position));
+
     }
 
     @Override
     public void onDuration(String duration) {
         Log.e("tlh", "duration:" + duration);
         this.duration.setText(duration);
+        mMediaDuration = TimeFormatUtil.getIntLength(duration);
+        seekBar.setMax(mMediaDuration);
     }
 
     @Override
@@ -350,6 +362,5 @@ public abstract class BaseMediaControllerActivity extends BaseActivity implement
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 }
